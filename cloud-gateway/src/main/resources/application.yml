@@ -1,0 +1,58 @@
+server:
+  # 网关19000~19009;mobile:19010~19019;manage:19020~19029;
+  # user:19030~19039;data:19040~19049;job:19050~19059;
+  # other:以此类推
+  port: 19000
+
+spring:
+  jackson:
+    serialization:
+      indent_output: true
+    date-format: yyyy-MM-dd HH:mm:ss
+    default-property-inclusion: non_empty
+    locale: zh_CN
+    time-zone: GMT+8
+  main:
+    allow-bean-definition-overriding: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 30MB
+      max-request-size: 100MB
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+          lowerCaseServiceId: true
+      routes:
+        - id: indicator-manage
+          uri: lb://cloud-manage
+          predicates:
+            - Path=/api/manage/**
+            # filters:
+            #- StripPrefix=1
+            # - RequestTime=true
+#  redis:
+#    host: ${newhope.redis.host}
+#    port: ${newhope.redis.port}
+#    password: ${newhope.redis.password}
+#    database: 10
+#    timeout: 3000
+#    pool:
+#      max-active: 200 #最大连接数
+#      max-idle: 100 #最大空闲连接数
+#      max-wait: 3000 #最大等待时间
+#      min-idle: 50
+
+secure:
+  ignore:
+    #配置白名单路径
+    urls:
+      - "/**/login"
+      - "/**/*.html"
+      - "/**/*.css"
+      - "/**/*.js"
+logging:
+  level:
+    com.alibaba.nacos.client.config.impl: WARN

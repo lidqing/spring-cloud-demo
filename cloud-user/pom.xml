@@ -18,6 +18,18 @@
     </properties>
 
     <dependencies>
+        <!-- 公共模块-->
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>cloud-common</artifactId>
+            <version>${my.project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>cloud-user-api</artifactId>
+            <version>${my.project.version}</version>
+        </dependency>
+
         <!-- spring cloud start-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

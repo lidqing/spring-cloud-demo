@@ -2,6 +2,7 @@ package org.example.gateway.filter;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.example.common.secure.TokenUtil;
 import org.example.gateway.config.WhiteListConfig;
 import org.example.gateway.model.R;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,28 +31,34 @@ public class AuthFilter implements GlobalFilter {
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String url = exchange.getRequest().getURI().getPath();
         if (whiteListConfig.getUrls().contains(url)) {
-            System.out.println("跳过不需要认证的url");
+            log.info("allowed url: {}", url);
             return chain.filter(exchange);
         }
 
-        String token = exchange.getRequest().getHeaders().getFirst("TOKEN");
-        log.info("get token: {}", token);
+        String token = exchange.getRequest().getHeaders().getFirst("Token");
+        log.info("get Token: {}", token);
         //验证token信息
-        //...
-
+        boolean checked = checkToken(token);
         //token验证失败
-        if (!checkToken(token)) {
+        if (!checked) {
             return setUnauthorizedResponse(exchange, "token verify failed.");
         }
-        //....
+
+
         //验证token成功
         return chain.filter(exchange);
     }
 
     private boolean checkToken(String token) {
-        //
-
-        return true;
+        boolean valid = TokenUtil.checkToken(token);
+        //合法token，查询token是否在redis
+        if (valid) {
+            //redis查询token
+            log.info("走redis查询token");
+            return true;
+        }
+        //token不合法或者未登录
+        return false;
     }
 
     private Mono<Void> setUnauthorizedResponse(ServerWebExchange exchange, String msg) {

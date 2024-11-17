@@ -1,0 +1,8 @@
+server:
+  port: 18001
+  servlet:
+    context-path: /api/user
+
+logging:
+  level:
+    com.alibaba.nacos.client.config.impl: INFO

@@ -18,6 +18,13 @@
     </properties>
 
     <dependencies>
+        <!-- 公共模块引入-->
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>cloud-common</artifactId>
+            <version>${my.project.version}</version>
+        </dependency>
+
         <!-- spring cloud start-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -61,6 +68,12 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.17.1</version>
         </dependency>
 
     </dependencies>

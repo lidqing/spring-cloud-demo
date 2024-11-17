@@ -3,9 +3,13 @@ package org.example;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 import java.util.Date;
 
+@SpringBootApplication
+@EnableDiscoveryClient
 public class CloudUserApplication {
 
     public static void main(String[] args) throws InterruptedException {

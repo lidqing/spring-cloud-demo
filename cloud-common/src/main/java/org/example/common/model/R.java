@@ -13,7 +13,7 @@ public class R extends HashMap<String, Object> {
 	}
 
 	public static R error() {
-		return error(500, "未知异常，请联系管理员");
+		return error(500, "未知异常");
 	}
 
 	public static R error(String msg) {

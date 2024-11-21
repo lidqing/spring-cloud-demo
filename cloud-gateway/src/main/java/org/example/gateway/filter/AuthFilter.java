@@ -1,6 +1,7 @@
 package org.example.gateway.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.nacos.api.common.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.example.common.secure.TokenUtil;
 import org.example.gateway.config.WhiteListConfig;
@@ -35,7 +36,7 @@ public class AuthFilter implements GlobalFilter {
             return chain.filter(exchange);
         }
 
-        String token = exchange.getRequest().getHeaders().getFirst("Token");
+        String token = exchange.getRequest().getHeaders().getFirst(Constants.TOKEN);
         log.info("get Token: {}", token);
         //验证token信息
         boolean checked = checkToken(token);

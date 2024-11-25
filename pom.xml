@@ -76,8 +76,6 @@
             <dependency>
                 <groupId>org.springframework.data</groupId>
                 <artifactId>spring-data-commons</artifactId>
-
-
                 <version>${spring-boot.version}</version>
             </dependency>
             <!--  spring-boot end -->
@@ -120,6 +118,19 @@
                 <version>1.7.26</version>
             </dependency>
             <!-- 定义log4j2 end -->
+
+            <!-- json工具类 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.83</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-core</artifactId>
+                <version>2.10.2</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>

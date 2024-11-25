@@ -11,3 +11,7 @@ spring:
         namespace: cloud-demo-prod
         password: nacos
         username: nacos
+    sentinel:
+      transport:
+        #port: 8719
+        dashboard: 192.168.1.89:8080

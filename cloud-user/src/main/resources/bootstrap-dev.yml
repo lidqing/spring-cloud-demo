@@ -2,16 +2,29 @@ spring:
   cloud:
     nacos:
       config:
-        server-addr: http://172.18.1.60:18848
-        #server-addr: http://192.168.1.89:18848
+        #server-addr: http://172.18.1.60:18848
+        server-addr: http://192.168.1.89:18848
         #namespace指namespace id
         namespace: cloud-demo-dev
         password: nacos
         username: nacos
       discovery:
-        server-addr: http://172.18.1.60:18848
-        #server-addr: http://192.168.1.89:18848
+        #server-addr: http://172.18.1.60:18848
+        server-addr: http://192.168.1.89:18848
         #namespace指namespace id
         namespace: cloud-demo-dev
         password: nacos
         username: nacos
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: 192.168.1.89:8080
+      datasource:
+        ds:
+          nacos:
+            server-addr: 192.168.1.89:18848
+            namespace: cloud-demo-dev
+            data-id: sentinel-flow
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: flow

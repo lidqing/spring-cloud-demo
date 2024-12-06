@@ -18,6 +18,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 /**
  * 网关鉴权
@@ -31,20 +32,19 @@ public class AuthFilter implements GlobalFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String url = exchange.getRequest().getURI().getPath();
+        //白名单路径放行
         if (whiteListConfig.getUrls().contains(url)) {
-            log.info("allowed url: {}", url);
             return chain.filter(exchange);
         }
 
         String token = exchange.getRequest().getHeaders().getFirst(Constants.TOKEN);
-        log.info("get Token: {}", token);
         //验证token信息
         boolean checked = checkToken(token);
         //token验证失败
         if (!checked) {
-            return setUnauthorizedResponse(exchange, "token verify failed.");
+            log.warn("Token verify failed, token: {}", token);
+            return setUnauthorizedResponse(exchange, "Token verify failed.");
         }
-
 
         //验证token成功
         return chain.filter(exchange);
@@ -54,8 +54,7 @@ public class AuthFilter implements GlobalFilter {
         boolean valid = TokenUtil.checkToken(token);
         //合法token，查询token是否在redis
         if (valid) {
-            //redis查询token
-            log.info("走redis查询token");
+            //走redis查询token
             return true;
         }
         //token不合法或者未登录

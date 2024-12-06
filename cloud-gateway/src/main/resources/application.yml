@@ -21,18 +21,27 @@ spring:
       max-request-size: 100MB
   cloud:
     gateway:
+      enabled: true
       discovery:
         locator:
           enabled: false
           lowerCaseServiceId: true
       routes:
-        - id: indicator-manage
+        - id: cloud_manage
           uri: lb://cloud-manage
           predicates:
             - Path=/api/manage/**
             # filters:
             #- StripPrefix=1
             # - RequestTime=true
+        - id: cloud_user
+          uri: lb://cloud-user
+          predicates:
+            - Path=/api/user/**
+        - id: cloud_order
+          uri: lb://cloud-order
+          predicates:
+            - Path=/api/order/**
 #  redis:
 #    host: ${newhope.redis.host}
 #    port: ${newhope.redis.port}

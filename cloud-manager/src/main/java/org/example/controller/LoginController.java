@@ -9,6 +9,7 @@ import org.example.feign.UserSearchApi;
 import org.example.model.Role;
 import org.example.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,9 @@ public class LoginController {
     @Autowired
     UserSearchApi userSearchApi;
 
+    static int count = 0;
+
+    @SentinelResource("doLogin")
     @PostMapping("/doLogin")
     public R login(String username, String password) {
         User user = userSearchApi.queryUser(username, password);
@@ -39,9 +43,26 @@ public class LoginController {
     }
 
     //@SentinelResource(value = "queryUser6")
-    User queryUser(String username, String password){
+    User queryUser(String username, String password) {
         return userSearchApi.queryUser(username, password);
     }
 
 
+    @PostMapping("/get")
+    public R get(String username, String password) {
+        try {
+            count++;
+            if (count % 2 == 1) {
+                log.info("暂停15s");
+                Thread.sleep(15000L);
+            } else {
+                log.info("暂停1s");
+                Thread.sleep(1000L);
+            }
+            log.info("access get {},{}", username, password);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return R.ok(username + "," + password);
+    }
 }

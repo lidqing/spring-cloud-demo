@@ -2,16 +2,34 @@ spring:
   cloud:
     nacos:
       config:
-        #server-addr: http://172.18.1.60:18848
-        server-addr: http://192.168.1.89:18848
+        server-addr: http://172.18.1.60:18848
+        #server-addr: http://192.168.1.89:18848
         #namespace指namespace id
         namespace: cloud-demo-dev
         password: nacos
         username: nacos
       discovery:
-        #server-addr: http://172.18.1.60:18848
-        server-addr: http://192.168.1.89:18848
+        server-addr: http://172.18.1.60:18848
+        #server-addr: http://192.168.1.89:18848
         #namespace指namespace id
         namespace: cloud-demo-dev
         password: nacos
         username: nacos
+    sentinel:
+      # 服务启动时直接建立心跳连接
+      eager: true
+      transport:
+        # 当前服务与控制台交互的端口号,默认为8719,同一个机器上若有多个应用端口后会自动递增
+        port: 8179
+        dashboard: 172.18.1.60:8080
+      #网关限流nacos数据源配置
+      datasource:
+        ds:
+          nacos:
+            server-addr: 172.18.1.60:18848
+            namespace: cloud-demo-dev
+            data-id: cloud-gateway-sentinel-flow
+            group-id: DEFAULT_GROUP
+            data-type: json
+            #gateway使用gw-flow，其他使用flow
+            rule-type: gw-flow

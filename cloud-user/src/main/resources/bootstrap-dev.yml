@@ -2,15 +2,15 @@ spring:
   cloud:
     nacos:
       config:
-        #server-addr: http://172.18.1.60:18848
-        server-addr: http://192.168.1.89:18848
+        server-addr: http://172.18.1.60:18848
+        #server-addr: http://192.168.1.89:18848
         #namespace指namespace id
         namespace: cloud-demo-dev
         password: nacos
         username: nacos
       discovery:
-        #server-addr: http://172.18.1.60:18848
-        server-addr: http://192.168.1.89:18848
+        server-addr: http://172.18.1.60:18848
+        s#erver-addr: http://192.168.1.89:18848
         #namespace指namespace id
         namespace: cloud-demo-dev
         password: nacos
@@ -18,13 +18,47 @@ spring:
     sentinel:
       transport:
         port: 8719
-        dashboard: 192.168.1.89:8080
+        dashboard: 172.18.1.60:8080
       datasource:
-        ds:
+        ds1:
           nacos:
-            server-addr: 192.168.1.89:18848
+            server-addr: 172.18.1.60:18848
             namespace: cloud-demo-dev
-            data-id: sentinel-flow
+            data-id: ${spring.application.name}-sentinel-flow
             group-id: DEFAULT_GROUP
             data-type: json
             rule-type: flow
+        ds2:
+          nacos:
+            server-addr: 172.18.1.60:18848
+            namespace: cloud-demo-dev
+            data-id: ${spring.application.name}-sentinel-degrade
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: degrade
+
+
+seata:
+  enabled: true
+  application-id: ${spring.application.name}
+  tx-service-group: ${spring.application.name}-tx-group
+  #service.vgroupMapping.cloud-user-tx-group=default
+  #service:
+  #  vgroupMapping:
+  #    cloud-user-tx-group: default
+  config:
+    type: nacos
+    nacos:
+      serverAddr: 172.18.1.60:18848
+      namespace: cloud-demo-dev
+      dataId: "seata.properties"
+      username: "nacos"
+      password: "nacos"
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      namespace: cloud-demo-dev
+      server-addr: 172.18.1.60:18848
+      username: "nacos"
+      password: "nacos"

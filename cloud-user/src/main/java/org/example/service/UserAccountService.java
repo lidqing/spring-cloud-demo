@@ -1,5 +1,7 @@
 package org.example.service;
 
+import io.seata.spring.annotation.GlobalLock;
+import io.seata.spring.annotation.GlobalTransactional;
 import org.example.dao.BarHibernateDAO;
 import org.example.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,8 @@ public class UserAccountService {
     @Autowired
     BarHibernateDAO barHibernateDAO;
 
+    @GlobalTransactional
+    @GlobalLock
     //@Transactional("hibernateTransaction")
     @Transactional
     public Account updateAccount(String userId) {

@@ -30,13 +30,19 @@ public class BusiController {
     @GlobalTransactional
     @PostMapping("/purchase")
     public R purchase(@RequestBody OrderDto order, @RequestParam(name = "error", defaultValue = "0") Integer error) {
-        log.info("busi xid: {}", RootContext.getXID());
+        log.info("global xid: {}", RootContext.getXID());
         //创建订单
         orderService.createOrder(order);
         //更新账号余额
         userAccountService.updateUserAccount(order.getUserId());
         if (error == 1) {
             throw new RuntimeException("模拟事务执行中发生异常");
+        }
+        try {
+            //模拟执行事务中暂停5s
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
 
         return R.ok("操作成功");

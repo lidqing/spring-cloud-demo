@@ -41,6 +41,13 @@
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat.embed</groupId>
+            <artifactId>tomcat-embed-core</artifactId>
+            <version>9.0.27</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- 公共模块编译用依赖 End-->
 
         <!-- JWT Token 依赖-->

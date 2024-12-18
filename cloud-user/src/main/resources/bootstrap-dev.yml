@@ -9,17 +9,22 @@ spring:
         password: nacos
         username: nacos
       discovery:
-        server-addr: http://172.18.1.60:18848
-        s#erver-addr: http://192.168.1.89:18848
+        server-addr: http://172.18.1.60:18848,http://172.18.1.60:18848
+        #server-addr: http://192.168.1.89:18848
         #namespace指namespace id
         namespace: cloud-demo-dev
         password: nacos
         username: nacos
+    # sentinel限流、熔断降级配置 start
     sentinel:
       transport:
+        # 应用与sentinel控制台交互的中间服务端口，固定配置为8719就行，如果端口冲突会自动增加端口号
         port: 8719
+        # sentinel控制台地址，需要先安装sentinel控制台
         dashboard: 172.18.1.60:8080
+      # sentinel 限流规则持久化存储的数据源，可配置多个
       datasource:
+        # 配置nacos存储限流规则
         ds1:
           nacos:
             server-addr: 172.18.1.60:18848
@@ -27,6 +32,7 @@ spring:
             data-id: ${spring.application.name}-sentinel-flow
             group-id: DEFAULT_GROUP
             data-type: json
+            # flow表示限流规则，不同类型规则不能配置在一个配置文件中
             rule-type: flow
         ds2:
           nacos:
@@ -35,13 +41,15 @@ spring:
             data-id: ${spring.application.name}-sentinel-degrade
             group-id: DEFAULT_GROUP
             data-type: json
+            # degrade 表示降级规则，不同类型规则不能配置在一个配置文件中
             rule-type: degrade
 
-
+# seata 分布式事务配置 start
 seata:
   enabled: true
   application-id: ${spring.application.name}
   tx-service-group: ${spring.application.name}-tx-group
+  data-source-proxy-mode: XA
   #service.vgroupMapping.cloud-user-tx-group=default
   #service:
   #  vgroupMapping:

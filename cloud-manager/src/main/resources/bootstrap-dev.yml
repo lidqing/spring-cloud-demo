@@ -43,21 +43,30 @@ spring:
 seata:
   enabled: true
   application-id: ${spring.application.name}
+  # 事务群组
   tx-service-group: ${spring.application.name}-tx-group
+  # 配置使用xa事务模式
+  data-source-proxy-mode: XA
+  # 配置seata使用配置中心
   config:
     type: nacos
     nacos:
       serverAddr: 172.18.1.60:18848
       namespace: cloud-demo-dev
       group: SEATA_GROUP
+      # 配置seata相关参数
       dataId: "seata.properties"
       username: "nacos"
       password: "nacos"
+  #配置TC(seata-server服务)注册中心配置，微服务根据这些配置找到seata-server的地址。应用名、命名空间、组要与TC配置保持一致
   registry:
     type: nacos
     nacos:
+      # seata服务应用名，要与seata注册的应用名一致
       application: seata-server
+      # 命名空间要与seata-server所在命名空间一致
       namespace: cloud-demo-dev
+      # 组要与seata-server所在命名空间一致
       group: SEATA_GROUP
       server-addr: 172.18.1.60:18848
       username: "nacos"

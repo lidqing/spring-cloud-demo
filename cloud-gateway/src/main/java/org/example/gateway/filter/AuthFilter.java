@@ -1,7 +1,6 @@
 package org.example.gateway.filter;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.nacos.api.common.Constants;
 import lombok.extern.slf4j.Slf4j;
 import org.example.common.secure.TokenUtil;
 import org.example.gateway.config.WhiteListConfig;
@@ -11,14 +10,14 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
+import org.example.common.constant.Constants;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 
 /**
  * 网关鉴权
@@ -38,6 +37,7 @@ public class AuthFilter implements GlobalFilter {
         }
 
         String token = exchange.getRequest().getHeaders().getFirst(Constants.TOKEN);
+        log.info("token: {}", token);
         //验证token信息
         boolean checked = checkToken(token);
         //token验证失败
@@ -46,8 +46,15 @@ public class AuthFilter implements GlobalFilter {
             return setUnauthorizedResponse(exchange, "Token verify failed.");
         }
 
+        // 设置userId到request里，后续可根据userId，获取用户信息
+        ServerHttpRequest mutableReq = exchange.getRequest().mutate()
+                .header(Constants.ACCESS_TOKEN, token)
+                .header(Constants.userId, TokenUtil.getSubject(token))
+                .build();
+        ServerWebExchange mutableExchange = exchange.mutate().request(mutableReq).build();
+
         //验证token成功
-        return chain.filter(exchange);
+        return chain.filter(mutableExchange);
     }
 
     private boolean checkToken(String token) {

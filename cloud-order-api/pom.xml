@@ -19,6 +19,7 @@
     </properties>
 
     <dependencies>
+        <!-- openfeign start-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
@@ -29,6 +30,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- openfeign end -->
         <!-- 限流熔断 start -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

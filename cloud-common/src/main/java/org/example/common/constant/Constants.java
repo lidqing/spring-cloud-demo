@@ -5,7 +5,8 @@ package org.example.common.constant;
  */
 public class Constants {
 
-    private static final String TOKEN = "Token";
-
+    public static final String TOKEN = "Token";
+    public static final String ACCESS_TOKEN = "accessToken";
+    public static final String userId = "userId";
 
 }

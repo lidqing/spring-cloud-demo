@@ -10,7 +10,7 @@ spring:
         username: nacos
       discovery:
         server-addr: http://172.18.1.60:18848
-        s#erver-addr: http://192.168.1.89:18848
+        #server-addr: http://192.168.1.89:18848
         #namespace指namespace id
         namespace: cloud-demo-dev
         password: nacos
@@ -41,6 +41,7 @@ seata:
   enabled: true
   application-id: ${spring.application.name}
   tx-service-group: ${spring.application.name}-tx-group
+  data-source-proxy-mode: XA
   config:
     type: nacos
     nacos:
